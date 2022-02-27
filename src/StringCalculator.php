@@ -1,16 +1,23 @@
 <?php
 
 
-namespace koans\StringCalculator\src;
+namespace Deg540\PHPTestingBoilerplate;
 
 
 class StringCalculator
 {
-    public function emptyString(string $input_string):string{
-        if (empty($input_string)){
+    public function add(string $input_string):string{
+        if($this->emptyString($input_string))
             return "0";
+        else{
+            
+        }
+    }
+    private function emptyString(string $input_string):bool{
+        if (empty($input_string)){
+            return true;
         }else
-            return "String contains values";
+            return false;
     }
 
     public function stringToFloat(string $input_string):float{
