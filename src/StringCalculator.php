@@ -13,5 +13,13 @@ class StringCalculator
             return "String contains values";
     }
 
-    
+    public function stringToFloat(string $input_string):float{
+        if ($this->emptyString($input_string) == "0"){
+            return "0";
+        }else{
+            return floatval($input_string);
+        }
+    }
+
+   
 }
