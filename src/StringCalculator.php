@@ -30,5 +30,14 @@ class StringCalculator
         }
     }
 
-    
+    public function addNewLineSeparator(string $input_string):float{
+        if ($this->emptyString($input_string) == "0"){
+            return "0";
+        }else{
+            $delimiters = ["\n",","];
+            $newStr = str_replace($delimiters, $delimiters[1], $input_string);
+            $FloatNumbers = array_map('floatval',explode(',', $newStr));
+            return array_sum($FloatNumbers);
+        }
+    }
 }
