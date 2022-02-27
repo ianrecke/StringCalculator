@@ -32,10 +32,17 @@ class StringCalculatorTest extends TestCase
      * @test : check if string is addable
      */
     public function addNumbersTest(){
-        $res = $this->stringCalculator->add("1,2");
-        $this->assertEquals("3",$res); //assert
+        $res = $this->stringCalculator->add("1,2,5,3");
+        $this->assertEquals("11",$res); //assert
     }
 
+    /**
+     * @test : check if string is addable
+     */
+    public function addNumbersTestCustomSeparator(){
+        $res = $this->stringCalculator->add("//sep\n1sep2sep5sep3");
+        $this->assertEquals("11",$res); //assert
+    }
     /**
      * @test : check if separator is valid
      */
@@ -57,6 +64,14 @@ class StringCalculatorTest extends TestCase
     public function ErrorMessageExpectedNumberButEof(){
         $res = $this->stringCalculator->add("1,2,");
         $this->assertEquals("Number expected but EOF found.\n",$res); //assert
+    }
+
+    /**
+     * @test : check if input is valid
+     */
+    public function ErrorMessageNoNegatives(){
+        $res = $this->stringCalculator->add("1,2,-3,2,-5");
+        $this->assertEquals("Negatives not allowed: -3 -5 ",$res); //assert
     }
 }
 
