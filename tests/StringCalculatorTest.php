@@ -43,6 +43,23 @@ class StringCalculatorTest extends TestCase
         $res = $this->stringCalculator->add("//sep\n1sep2sep5sep3");
         $this->assertEquals("11",$res); //assert
     }
+
+    /**
+     * @test : check if string is addable
+     */
+    public function multiplyNumbersTest(){
+        $res = $this->stringCalculator->multiply("5,3");
+        $this->assertEquals("15",$res); //assert
+    }
+
+    /**
+     * @test : check if string is addable
+     */
+    public function multiplyNumbersTestCustomSeparator(){
+        $res = $this->stringCalculator->multiply("//sep\n5sep3");
+        $this->assertEquals("15",$res); //assert
+    }
+
     /**
      * @test : check if separator is valid
      */

@@ -23,6 +23,23 @@ class StringCalculator
                 return $errors;
         }
     }
+
+    public function multiply(string $input_string):string{
+        if($this->emptyString($input_string))
+            return "0";
+        else{
+            $errors = $this->errorLogs($input_string);
+            if ($this->emptyString($errors))
+                if ($this->hasCustomOperator($input_string)){
+                    return strval($this->multiplyWithCustomSeparator($input_string));
+                }else{
+                    return strval($this->multiplyNewLineSeparator($input_string));
+                }
+            else
+                return $errors;
+        }
+    }
+
     private function emptyString(string $input_string):bool{
         if (empty($input_string)){
             return true;
@@ -35,12 +52,23 @@ class StringCalculator
         return array_sum($FloatNumbers);
     }
 
+    private function multiplyNumbers(string $input_string):float{
+        $FloatNumbers = array_map('floatval',explode(',', $input_string));
+        return array_product($FloatNumbers);
+    }
 
     private function addNewLineSeparator(string $input_string):float{
         $delimiters = ["\n",","];
         $newStr = str_replace($delimiters, $delimiters[1], $input_string);
         return $this->addNumbers($newStr);
     }
+
+    private function multiplyNewLineSeparator(string $input_string):float{
+        $delimiters = ["\n",","];
+        $newStr = str_replace($delimiters, $delimiters[1], $input_string);
+        return $this->multiplyNumbers($newStr);
+    }
+
     //contains the function errors
     private function errorLogs(string $input_string):string{
         $errorLog = "";
@@ -107,6 +135,14 @@ class StringCalculator
         $stringNoSeparator = explode("".$separator."\n",$input_string);
         $FloatNumbers = array_map('floatval',explode(''.$separator, $stringNoSeparator[1]));
         return array_sum($FloatNumbers);
+
+    }
+    private function multiplyWithCustomSeparator(string $input_string):float{
+
+        $separator = $this->createCustomSeparators($input_string);
+        $stringNoSeparator = explode("".$separator."\n",$input_string);
+        $FloatNumbers = array_map('floatval',explode(''.$separator, $stringNoSeparator[1]));
+        return array_product($FloatNumbers);
 
     }
 
