@@ -4,13 +4,15 @@
 namespace Deg540\PHPTestingBoilerplate;
 
 
+use function PHPUnit\Framework\stringStartsWith;
+
 class StringCalculator
 {
     public function add(string $input_string):string{
         if($this->emptyString($input_string))
             return "0";
         else{
-            return "String with content";
+            return strval($this->addNumbers($input_string));
         }
     }
     private function emptyString(string $input_string):bool{
@@ -53,6 +55,11 @@ class StringCalculator
     }
 
     private function createCustomSeparators(string $input_string):string{
-
+        if(str_starts_with($input_string,"//")){
+            //contents is split in 2, first half contains the separator
+            $contents= explode("\n",$input_string);
+            return substr($contents[0],2);
+        }
+        return false;
     }
 }

@@ -27,8 +27,11 @@ class StringCalculatorTest extends TestCase
         $this->assertEquals("0",$res); //assert
     }
 
-   
+    /**
+     * @test : check if string is empty
+     */
     public function addNumbersTest(){
-        $res = $this->stringCalculator->addNumbers("");
+        $res = $this->stringCalculator->add("1,2");
+        $this->assertEquals("3",$res); //assert
     }
 }
