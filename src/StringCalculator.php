@@ -21,5 +21,14 @@ class StringCalculator
         }
     }
 
-   
+    public function addNumbers(string $input_string):float{
+        if ($this->emptyString($input_string) == "0"){
+            return "0";
+        }else{
+            $FloatNumbers = array_map('floatval',explode(',', $input_string));
+            return array_sum($FloatNumbers);
+        }
+    }
+
+    
 }
