@@ -94,7 +94,8 @@ class StringCalculator
 
     private function addWithCustomSeparatorRestriction(string $input_string):bool{
         $separator = $this->createCustomSeparators($input_string);
-        if(str_contains($input_string,",")||str_contains($input_string,"\n")){
+        $stringNoSeparator = explode("".$separator."\n",$input_string);
+        if(str_contains($stringNoSeparator[1],",")||str_contains($stringNoSeparator[1],"\n")){
             return true;
         }else{
             return false;
@@ -103,7 +104,8 @@ class StringCalculator
     private function addWithCustomSeparator(string $input_string):float{
 
         $separator = $this->createCustomSeparators($input_string);
-        $FloatNumbers = array_map('floatval',explode(''.$separator, $input_string));
+        $stringNoSeparator = explode("".$separator."\n",$input_string);
+        $FloatNumbers = array_map('floatval',explode(''.$separator, $stringNoSeparator[1]));
         return array_sum($FloatNumbers);
 
     }
