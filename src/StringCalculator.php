@@ -37,19 +37,15 @@ class StringCalculator
 
 
     private function addNewLineSeparator(string $input_string):float{
-        if ($this->emptyString($input_string) == "0"){
-            return "0";
-        }else{
-            $delimiters = ["\n",","];
-            $newStr = str_replace($delimiters, $delimiters[1], $input_string);
-            return $this->addNumbers($newStr);
-        }
+        $delimiters = ["\n",","];
+        $newStr = str_replace($delimiters, $delimiters[1], $input_string);
+        return $this->addNumbers($newStr);
     }
     //contains the function errors
     private function errorLogs(string $input_string):string{
         $errorLog = "";
         if($this->invalidNewLineSeparator( $input_string)){
-            $pos = strpos($input_string,",\n");
+            $pos = strpos($input_string,"\n");
             $errorLog.="Number expected but '\\n' found at position ".$pos.".\n";
         }
         if($this->missingNumberLastPosition($input_string))
@@ -62,6 +58,8 @@ class StringCalculator
                 $errorLog.= $separator." expected but ',' found at position ".$pos.".\n";
             }
         }
+        $errorLog.=$this->containsNegative($input_string);
+        return $errorLog;
     }
 
     private function invalidNewLineSeparator(string $input_string):bool{
@@ -110,5 +108,28 @@ class StringCalculator
 
     }
 
+    private function containsNegative(string $input_string):string{
+        if ($this->hasCustomOperator($input_string)){
+            $separator = $this->createCustomSeparators($input_string);
+            $delimiters = ["\n",","];
+            $newStr = str_replace($delimiters, $separator, $input_string);
+            $elements = explode($separator,$newStr);
+
+        }else{
+            $delimiters = ["\n",","];
+            $newStr = str_replace($delimiters,",", $input_string);
+            $elements = explode(",",$newStr);
+
+        }
+        $numbers = "";
+        foreach ($elements as $element){
+            if(floatval($element)<0)
+                $numbers.=$element." ";
+        }
+        if($this->emptyString($numbers))
+            return "";
+        else
+            return "Negatives not allowed: ".$numbers;
+    }
 
 }
