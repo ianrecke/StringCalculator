@@ -90,5 +90,12 @@ class StringCalculatorTest extends TestCase
         $res = $this->stringCalculator->add("1,2,-3,2,-5");
         $this->assertEquals("Negatives not allowed: -3 -5 ",$res); //assert
     }
+    /**
+     * @test : check if input is valid
+     */
+    public function multipleErrorMessage(){
+        $res = $this->stringCalculator->add("1,2,-3,2,-5,");
+        $this->assertEquals("Number expected but EOF found.\nNegatives not allowed: -3 -5 ",$res); //assert
+    }
 }
 
