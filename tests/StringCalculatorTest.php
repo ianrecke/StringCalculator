@@ -11,53 +11,66 @@ use function Sodium\add;
 
 class StringCalculatorTest extends TestCase
 {
+    private StringCalculator $stringCalculator;
 
     /**
      * @setUp
      */
-    protected function setUp():void{
+    protected function setUp():void
+    {
         parent::setUp();
+
         $this->stringCalculator=  new StringCalculator();
     }
 
     /**
      * @test : check if string is empty
      */
-    public function string_is_empty(){
+    public function stringIsEmpty()
+    {
         $res = $this->stringCalculator->add("");
-        $this->assertEquals("0",$res); //assert
+
+        $this->assertEquals("0",$res);
     }
 
     /**
      * @test : check if string is addable
      */
-    public function addNumbersTest(){
+    public function addNumbersTest()
+    {
         $res = $this->stringCalculator->add("1,2,5,3");
-        $this->assertEquals("11",$res); //assert
+
+        $this->assertEquals("11",$res);
     }
 
     /**
      * @test : check if string is addable
      */
-    public function addNumbersTestCustomSeparator(){
+    public function addNumbersTestCustomSeparator()
+    {
         $res = $this->stringCalculator->add("//sep\n1sep2sep5sep3");
-        $this->assertEquals("11",$res); //assert
+
+        $this->assertEquals("11",$res);
     }
 
     /**
      * @test : check if string is addable
      */
-    public function multiplyNumbersTest(){
+    public function multiplyNumbersTest()
+    {
         $res = $this->stringCalculator->multiply("5,3");
-        $this->assertEquals("15",$res); //assert
+
+        $this->assertEquals("15",$res);
     }
 
     /**
      * @test : check if string is addable
      */
-    public function multiplyNumbersTestCustomSeparator(){
+    public function multiplyNumbersTestCustomSeparator()
+    {
         $res = $this->stringCalculator->multiply("//sep\n5sep3");
-        $this->assertEquals("15",$res); //assert
+
+        $this->assertEquals("15",$res);
     }
 
     /**
@@ -65,37 +78,71 @@ class StringCalculatorTest extends TestCase
      */
     public function createValidCustomSeparator(){
         $res = $this->stringCalculator->hasCustomOperator("/sep\n");
-        $this->assertEquals(false,$res); //assert
+
+        $this->assertEquals(false,$res);
+    }
+    /**
+     * @test : check if separator is valid
+     */
+    public function createValidCustomSeparatorAdd(){
+        $res = $this->stringCalculator->add("/sep\n1sep2");
+
+        $this->assertEquals("Invalid custom operator",$res);
     }
     /**
      * @test : check if input is valid
      */
-    public function ErrorMessageExpectedNumber()
+    public function errorMessageExpectedNumber()
     {
         $res = $this->stringCalculator->add("1,\n2");
-        $this->assertEquals("Number expected but '\\n' found at position 2.\n",$res); //assert
+
+        $this->assertEquals("Number expected but '\\n' found at position 2.\n",$res);
     }
     /**
      * @test : check if input is valid
      */
-    public function ErrorMessageExpectedNumberButEof(){
+    public function errorMessageExpectedNumberButEof()
+    {
         $res = $this->stringCalculator->add("1,2,");
-        $this->assertEquals("Number expected but EOF found.\n",$res); //assert
+
+        $this->assertEquals("Number expected but EOF found.\n",$res);
     }
 
     /**
      * @test : check if input is valid
      */
-    public function ErrorMessageNoNegatives(){
+    public function errorMessageNoNegatives()
+    {
         $res = $this->stringCalculator->add("1,2,-3,2,-5");
-        $this->assertEquals("Negatives not allowed: -3 -5 ",$res); //assert
+
+        $this->assertEquals("Negatives not allowed: -3 -5 ",$res);
     }
     /**
      * @test : check if input is valid
      */
-    public function multipleErrorMessage(){
+    public function multipleErrorMessage()
+    {
         $res = $this->stringCalculator->add("1,2,-3,2,-5,");
-        $this->assertEquals("Number expected but EOF found.\nNegatives not allowed: -3 -5 ",$res); //assert
+
+        $this->assertEquals("Number expected but EOF found.\nNegatives not allowed: -3 -5 ",$res);
+    }
+    /**
+     * @test : check if input is valid
+     */
+    public function errorMessageInvalidSeparatorNewLine()
+    {
+        $res = $this->stringCalculator->add("//sep\n1sep2\n5sep3");
+
+        $this->assertEquals("sep expected but '\\n' found at position 5.\n",$res);
+    }
+    /**
+     * @test : check if input is valid
+     */
+    public function errorMessageInvalidSeparator()
+    {
+        $res = $this->stringCalculator->add("//sep\n1sep2,5sep3");
+
+        $this->assertEquals("sep expected but ',' found at position 5.\n",$res);
     }
 }
 
