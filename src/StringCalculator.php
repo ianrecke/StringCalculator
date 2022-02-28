@@ -69,7 +69,6 @@ class StringCalculator
         return $this->multiplyNumbers($newStr);
     }
 
-    //contains the function errors
     private function errorLogs(string $input_string):string{
         $errorLog = "";
         if($this->invalidNewLineSeparator( $input_string)){
@@ -78,21 +77,40 @@ class StringCalculator
         }
         if($this->missingNumberLastPosition($input_string))
             $errorLog.="Number expected but EOF found.\n";
-        if($this->hasCustomOperator($input_string)){
-            if($this->addWithCustomSeparatorRestriction($input_string)){
-                $separator = $this->createCustomSeparators($input_string);
-                $newStr = str_replace("\n", ",", $input_string);
-                $pos = strpos($newStr,",");
-                $errorLog.= $separator." expected but ',' found at position ".$pos.".\n";
-            }
+        if($this->hasCustomOperator($input_string)) {
+            if ($this->isValidCustomOperator($input_string)){
+                if ($this->addWithCustomSeparatorRestriction($input_string)) {
+                    $separator = $this->createCustomSeparators($input_string);
+                    $stringNoSeparator = explode("".$separator."\n",$input_string);
+                    if(str_contains($stringNoSeparator[1],"\n")) {
+                        $separator = $this->createCustomSeparators($input_string);
+                        $newStr = str_replace("\n", ",", $stringNoSeparator[1]);
+                        $pos = strpos($newStr, ",");
+                        $errorLog .= $separator . " expected but '\\n' found at position " . $pos . ".\n";
+                    }else{
+                        $separator = $this->createCustomSeparators($input_string);
+                        $newStr = str_replace(",", "\n", $stringNoSeparator[1]);
+                        $pos = strpos($newStr, "\n");
+                        $errorLog .= $separator . " expected but ',' found at position " . $pos . ".\n";
+                    }
+                }
+            }else
+                $errorLog.="Invalid custom operator";
         }
         $errorLog.=$this->containsNegative($input_string);
         return $errorLog;
     }
 
+    private function isValidCustomOperator(string $input_string):bool{
+        if(str_starts_with($input_string,"//"))
+            return true;
+        else
+            return false;
+    }
+
     private function invalidNewLineSeparator(string $input_string):bool{
         $newStr = str_replace(" ","",$input_string);
-        if (str_contains($input_string,",\n"))
+        if (str_contains($input_string,",\n")|| str_contains($input_string,"\n,"))
             return true;
         else
             return false;
@@ -108,7 +126,7 @@ class StringCalculator
     }
 
     public function hasCustomOperator(string $input_string):bool{
-        if(str_starts_with($input_string,"//"))
+        if(str_starts_with($input_string,"/"))
             return true;
         else
             return false;
