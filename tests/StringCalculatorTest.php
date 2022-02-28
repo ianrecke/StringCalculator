@@ -76,7 +76,8 @@ class StringCalculatorTest extends TestCase
     /**
      * @test : check if separator is valid
      */
-    public function createValidCustomSeparatorAdd(){
+    public function createValidCustomSeparatorAdd()
+    {
         $res = $this->stringCalculator->add("/sep\n1sep2");
 
         $this->assertEquals("Invalid custom operator",$res);
