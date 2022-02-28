@@ -72,15 +72,7 @@ class StringCalculatorTest extends TestCase
 
         $this->assertEquals("15",$res);
     }
-
-    /**
-     * @test : check if separator is valid
-     */
-    public function createValidCustomSeparator(){
-        $res = $this->stringCalculator->hasCustomOperator("/sep\n");
-
-        $this->assertEquals(false,$res);
-    }
+    
     /**
      * @test : check if separator is valid
      */
